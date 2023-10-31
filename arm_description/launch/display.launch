@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="use_gui" value="true"/>
+  <!--arg name="rvizconfig" default="$(find arm_description)/rviz/default.rviz"/-->
+  <arg name="rvizconfig" default="$(find arm_description)/rviz/config1.rviz"/>
+  
+  <!-- Robot model description /-->
+  <!-- This lauch file just loads the URDF with the given hardware interface and robot name into the ROS Parameter Server -->
+  <arg name="hardware_interface" default="PositionJointInterface"/>
+  <arg name="robot_name" default="arm"/>
+  <arg name="origin_xyz" default="'0 0 0'"/> <!-- Note the syntax to pass a vector -->
+  <arg name="origin_rpy" default="'0 0 0'"/>
+  
+  <param name="robot_description" command="$(find xacro)/xacro $(find arm_description)/urdf/arm.urdf.xacro"/>
+  
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"/>
+  <node pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen"/>
+  
+  <!-- Show in Rviz /-->
+ <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
+  
+</launch>
